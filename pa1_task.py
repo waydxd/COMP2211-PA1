@@ -55,10 +55,10 @@ import numpy as np
 # %%
 # Task 0.2: read dataset
 if __name__ == '__main__':
-    from google.colab import drive
-    drive.mount('/content/drive')
+    #from google.colab import drive
+    #drive.mount('/content/drive')
 # todo start #
-    YourFilePath = '/home/wayd/COMP2211-PA1'
+    YourFilePath = '/Users/wayd/COMP2211-PA1'
 # todo end #
     train_features = pd.read_csv(YourFilePath+'/train_features.csv')
     test_features = pd.read_csv(YourFilePath+'/test_features.csv')
@@ -242,7 +242,7 @@ def knn_prediction(distances, y_train, k):
 # Task 4: Evaluation of the K Nearest Neighbors Classifier
 def f_score(y_test, prediction, y_classes):
   num_classes = len(y_classes)
-
+  print("Y_classes",y_classes)
   # todo start #
   f_score_array = np.zeros(num_classes)
   for i in range(num_classes):
@@ -364,7 +364,7 @@ def k_means_cluster_reassignment(X_train, initial_centroids, max_iterations=100)
     centroids = calculate_centroids(X_train, assignment, k)
     # todo start #
     if iteration != 0 :
-      if np.sum(assignment - original) == 0: 
+      if np.sum(np.abs(assignment - original)) == 0: 
         break
     original = assignment.copy()
     
@@ -387,7 +387,7 @@ def k_means_centroid_value(X_train, initial_centroids, max_iterations=100, thres
     centroids = calculate_centroids(X_train, assignment, k)
     # todo start #
     if iteration != 0:
-      if np.sum(np.abs(centroids - original)) < 0.0001: 
+      if np.prod((np.abs(centroids - original) < threshold_value).astype(int)): 
         break
     original = centroids.copy()
     # todo end #
