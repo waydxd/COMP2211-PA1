@@ -197,7 +197,8 @@ def knn_prediction(distances, y_train, k):
   # todo start #
   y_classes = np.unique(y_train)
   sort_order = np.argsort(distances,axis=1)
-  kDistances = 1/(np.take_along_axis(distances,sort_order,axis=1)[:,:k] + np.finfo(float).eps)
+  noZeroD = np.where(distances!=0,distances,np.finfo(float).eps)
+  kDistances = 1/(np.take_along_axis(noZeroD,sort_order,axis=1)[:,:k])
   kY_train = np.take_along_axis(y_train.T,sort_order,axis=1)[:,:k]
   bool_kY_train = np.arange(np.max(y_train)+1)[None,None,:] == kY_train[:,:,None]
   Y_count = np.sum(bool_kY_train,axis=1)
@@ -387,7 +388,7 @@ def k_means_centroid_value(X_train, initial_centroids, max_iterations=100, thres
     centroids = calculate_centroids(X_train, assignment, k)
     # todo start #
     if iteration != 0:
-      if np.prod((np.abs(centroids - original) < threshold_value).astype(int)): 
+      if np.prod((np.abs(centroids - original) >= threshold_value).astype(int)): 
         break
     original = centroids.copy()
     # todo end #
